@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Management Program</title>
+    <link rel="stylesheet" href="Style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="intro">
+        <h1 id="samaText">SAMA</h1>
+    </div>
+    
+    <header>
+        <h1>Project Risk Management</h1>
+        <nav>
+            <ul>
+                <li><a href="#createProjectForm" id="createProjectBtn">Create Project</a></li>
+                <li><a href="#editProjectForm" id="editProjectBtn">Edit Project</a></li>
+
+              
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        
+        <div class="sphere" id="sphere"></div>
+        <div id="projectModal" class="modal hidden">
+            <div class="modal-content">
+               <span class="close" id="closeModal">&times;</span>
+                <h2>Enter Project Code (ID)</h2>
+                <input type="text" id="projectCodeInput" placeholder="Enter Project Code">
+                <button type="button" onclick="prevStep()">Previous</button>
+                <button type="button" onclick="nextStep()">Next</button>
+            </div>
+        </div>
+
+        <section id="createProjectForm" class="hidden">
+            <h2>Create New Project</h2>
+            <form id="createProjectFormElement">
+                <div id="progressBar" style="background-color: #e0e0e0; border-radius: 5px; width: 100%; height: 20px; margin-bottom: 20px;">
+                    <div id="progress" style="background-color: #4caf50; width: 0%; height: 100%; border-radius: 5px;"></div>
+                </div>
+                
+                <div id="step1" class="form-step ">
+                    <label for="projectCode" title="Enter a unique project identifier">Project Code</label>
+                    <input type="text" id="projectCode" required>
+                    <button type="button" onclick="nextStep()">Next</button>
+                </div>
+                
+                <div id="step2" class="form-step hidden" >
+                    <label for="projectName">Project Name</label>
+                    <input type="text" id="projectName" required>
+                    <button type="button" onclick="prevStep()">Previous</button>
+                    <button type="button" onclick="nextStep()">Next</button>
+                </div>
+                
+                <div id="step3" class="form-step hidden">
+                    <label for="projectDescription">Project Description</label>
+                    <textarea id="projectDescription" required></textarea>
+                    <button type="button" onclick="prevStep()">Previous</button>
+                    <button type="button" onclick="nextStep()">Next</button>
+                </div>
+                <div id="step4" class="form-step hidden">
+                    <label for="goalName">Goals</label>
+                    
+                    <!-- Container for the dynamically added goals -->
+                    <div id="goalsContainer" class="goals-container">
+                        <!-- Goals will be added here -->
+                    </div>
+                
+                    <div class="buttons">
+                        <button type="button" onclick="prevStep()">Previous</button>
+                        <button type="button" onclick="addGoal()">Add Goal</button>
+                        <button type="button" id="goalSubmit">Submit Goals</button>
+                    </div>
+                </div>
+                <div id="timeStagesStep" class="form-step hidden">
+                    <h2>Time Stages</h2>
+                    <label for="numStages">Number of Stages:</label>
+                    <input type="number" id="numStages" placeholder="Enter number of stages">
+                    <button onclick="generateStages()">Generate Stages</button>
+                    <div id="stagesContainer"></div>
+                
+                </div>
+                 
+                  
+                  <div id="defenseLayerStep" class="hidden">
+                    <h3 id="currentStageLabel"></h3>
+                    <div id="defenseLayersContainer"></div>
+                    <button id="addLayerButton">Add Defense Layer</button>
+                
+                    <button id="nextStageButton" onclick="nextDefenseLayerStep()">Next Stage</button>
+                  </div>
+                  
+                  <div id="riskQuestion" class="form-step hidden">
+                    <p>Do you want to add risks to this project?</p>
+                    <button type="button" onclick="prevStep()">Previous</button>
+                    <button type="button" id="yesAddRisksBtn">Yes, Add Risks</button>
+                    <button type="button" id="noSkipRisksBtn">No, Skip</button>
+                </div>
+                
+                <div id="step9" class="hidden">
+                    <label for="riskCode">Risk Code</label>
+                    <input type="text" id="riskCode">
+                
+                    <label for="riskName">Risk Name</label>
+                    <input type="text" id="riskName">
+                    <div class="tooltip">
+                        <label for="focusOfImpact">Focus of Impact (1 to 10)</label>
+                        <span class="tooltiptext">
+                            Indicates the extent of the risk's impact on the studied statistical community—whether it is localized or widespread.
+                        </span>
+                    </div>
+                    <input type="number" id="focusOfImpact" min="1" max="10">
+                
+                    <div class="tooltip">
+                        <label for="suddenness">Suddenness (0.1 to 1)</label>
+                        <span class="tooltiptext">
+                            Indicates the extent to which warning signs are present, suggesting the potential occurrence of a risk.
+                        </span>
+                    </div>
+                    <input type="number" id="suddenness" min="0.1" max="1" step="0.1">
+                
+                    <div class="tooltip">
+                        <label for="frequency">Frequency (1 to 10)</label>
+                        <span class="tooltiptext">
+                      
+                    	Refers to how often a particular risk occurs during a given time period, based on historical data.	
+
+                        </span>
+                    </div>
+                    <input type="number" id="frequency" min="1" max="10">
+                
+                    <div class="tooltip">
+                        <label for="effectiveness">Effectiveness (0.1 to 1)</label>
+                        <span class="tooltiptext">
+                        	Indicates the variability of the intensity of the risk's impact within a given time period.	
+
+                        </span>
+                    </div>
+                    <input type="number" id="effectiveness" min="0.1" max="1" step="0.1">
+            
+                    <button onclick="addRisk()">Add Risk</button>
+                    <button onclick="openRiskLocationModal()">Specify Risk Location</button>
+                    
+                </div>
+                
+                <!-- SweetAlert2 JavaScript -->
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                
+            <!-- Checkbox Container خارج المودال -->
+
+<!-- Modal -->
+<div id="riskLocationModal" class="modal hidden">
+    <div class="modal-content">
+        <h2>Specify Risk Location</h2>
+        <p>Choose the time stages and defense layers associated with this risk:</p>
+        <!-- تأكد أن هذا القسم له معرف فريد -->
+        <div id="modalRiskStagesContainer" class="checkbox-container"></div>
+        <div class="modal-actions">
+            <button id="saveRiskLocation" class="btn-primary">Save</button>
+            <button id="cancelRiskLocation" class="btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+<div id="riskRelationsContainer" style="display: none;">
+    <h3>Relationship with Risks</h3>
+    <label for="relationshipWithRisks">Select the relationship with other overlapping risks:</label>
+    <select id="relationshipWithRisks" name="relationshipWithRisks" class="dropdown">
+      <option value="" disabled selected>Choose an option</option>
+      <option value="cumulative">Cumulative Overlapping (+)</option>
+      <option value="maximum">Maximum (Non-Compositional)</option>
+      <option value="none">No Relation</option>
+    </select>
+    
+    <!-- زر لتأكيد الاختيار -->
+    <button id="confirmRiskRelationship" style="margin-top: 10px;">Confirm Relationship</button>
+  </div>
+  
+                <ul id="risksList" style="display: none;">
+    <li>Risk 1</li>
+    <li>Risk 2</li>
+</ul>
+
+                    <div id="risksList"></div>
+                    <div id="riskAddedMessage" class="hidden">Risk added successfully!</div>
+                </div>
+                <div id="progressBar"><div id="progress"></div></div>
+                 <!-- New Button for Analysis -->
+                <button id="analyzeButton" type="button" onclick="calculateRFH()">Show Horizontal Analysis (RFH)</button>
+                
+                <!-- Results Container -->
+                <div id="rfhResults"> 
+                    
+                </div>
+                <!-- زر التحليل الشاقولي -->
+<button id="analyzeVerticalButton" type="button" onclick="calculateRFV()">Vertical Analysis (RFV)</button>
+
+
+
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 All Rights Reserved</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script><canvas id="riskChart"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+        
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+
+<script src="script.js "></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>  
